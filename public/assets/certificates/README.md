@@ -11,7 +11,7 @@ Drop your certificate files here. The portfolio expects these filenames:
 | IBM RAG and Agentic AI (IBM)                         | `IBM RAG And Agentic AI Certificate.pdf`                  |
 | Machine Learning in Production (DeepLearning.AI)     | `Machine Learning in Production.pdf`                      |
 
-Each entry in `ACHIEVEMENTS` (in `portfolio.jsx`) also supports an optional
+Each entry in `ACHIEVEMENTS` (in `src/data/achievements.ts`) also supports an optional
 `desc:` field — a one-sentence description shown on the card and inside the
 preview modal. Edit the placeholder text there to match your own framing.
 
@@ -26,7 +26,7 @@ preview modal. Edit the placeholder text there to match your own framing.
 Supported formats: **PDF, PNG, JPG, JPEG, WEBP**.
 
 If you use a different extension (e.g. `python-udemy.png`), update the matching
-`cert:` path in `portfolio.jsx` (`ACHIEVEMENTS` for certifications,
+`cert:` path in `src/data/*.ts` (`ACHIEVEMENTS` for certifications,
 `EXPERIENCE` for internships).
 
 > The certification cards show a live preview of the PDF (first page). The

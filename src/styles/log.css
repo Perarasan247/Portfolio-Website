@@ -1,0 +1,205 @@
+/* Training-log timeline */
+.log {
+  position: relative;
+  display: grid;
+  gap: var(--s-5);
+  padding-left: 28px;
+}
+
+.log::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent-line), var(--line-2) 30%, var(--line-1));
+}
+
+.log-entry {
+  position: relative;
+  display: grid;
+  gap: var(--s-3);
+}
+
+.log-node {
+  position: absolute;
+  left: -28px;
+  top: 6px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid var(--text-3);
+  background: var(--bg);
+}
+
+.log-entry:first-child .log-node {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.log-when {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
+
+.log-latest {
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.log-card {
+  padding: var(--s-5);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-lg);
+  background: var(--surface-1);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.log-card:hover {
+  border-color: var(--line-2);
+}
+
+.log-title {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.log-org {
+  margin-top: 4px;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.log-org b {
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+.log-bullets {
+  display: grid;
+  gap: 8px;
+  margin-top: var(--s-4);
+  max-width: 72ch;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+.log-bullets li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.log-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.72em;
+  width: 7px;
+  height: 1px;
+  background: var(--text-3);
+}
+
+.log-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+  margin-top: var(--s-5);
+}
+
+.text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  color: var(--text-1);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.text-btn svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.text-btn:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+@media (min-width: 900px) {
+  .log {
+    padding-left: 0;
+    gap: var(--s-4);
+  }
+
+  .log::before {
+    left: calc(180px + 5px);
+  }
+
+  .log-entry {
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: var(--s-7);
+  }
+
+  .log-when {
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 22px;
+    padding-right: var(--s-5);
+    text-align: right;
+  }
+
+  .log-node {
+    left: calc(180px);
+    top: 26px;
+  }
+}
+
+/* The timeline draws downward and each checkpoint pops in as it arrives. */
+.log::before {
+  transform-origin: 50% 0;
+}
+
+.reveal-ready .log:not(.in)::before {
+  transform: scaleY(0);
+}
+
+.reveal-ready .log::before {
+  transition: transform 1.6s var(--ease-out);
+}
+
+.reveal-ready .log-entry .log-node {
+  transform: scale(0);
+  transition: transform 480ms var(--ease-spring) 200ms;
+}
+
+.reveal-ready .log-entry.in .log-node {
+  transform: none;
+}
+
+/* The latest checkpoint keeps a slow "training" pulse. */
+.log-entry:first-child .log-node::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  animation: pulse 2.4s var(--ease-out) infinite;
+}

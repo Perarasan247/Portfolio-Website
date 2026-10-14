@@ -1,0 +1,139 @@
+.hl-accent {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hl-amber {
+  font-style: normal;
+  color: var(--amber);
+}
+
+.about-grid {
+  display: grid;
+  gap: var(--s-6);
+}
+
+.about-text {
+  display: grid;
+  align-content: start;
+  gap: var(--s-5);
+  max-width: 64ch;
+  color: var(--text-2);
+  font-size: var(--fs-base);
+  line-height: 1.7;
+}
+
+.about-text .lead {
+  color: var(--text-1);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+}
+
+.about-side {
+  display: grid;
+  gap: var(--s-4);
+  align-content: start;
+}
+
+/* Shared "panel" — a file/console window */
+.panel {
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-lg);
+  background: var(--surface-1);
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: 10px var(--s-4);
+  border-bottom: 1px solid var(--line-1);
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.panel-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+}
+
+.config {
+  display: grid;
+  gap: 2px;
+  padding: var(--s-4);
+  font-size: var(--fs-sm);
+}
+
+.config div {
+  display: grid;
+  grid-template-columns: 11ch 1fr;
+  gap: var(--s-3);
+  padding: 6px 0;
+}
+
+.config dt {
+  color: var(--cyan);
+}
+
+.config dd {
+  margin: 0;
+  color: var(--text-1);
+}
+
+.now-list {
+  display: grid;
+}
+
+.now-list li {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: var(--s-3);
+  padding: 14px var(--s-4);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.now-list li + li {
+  border-top: 1px solid var(--line-1);
+}
+
+.now-list b {
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+.now-tag {
+  align-self: start;
+  justify-self: start;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: var(--fs-xs);
+}
+
+.tone-accent {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tone-amber {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.tone-cyan {
+  color: var(--cyan);
+  background: var(--cyan-soft);
+}
+
+@media (min-width: 960px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--s-8);
+  }
+}

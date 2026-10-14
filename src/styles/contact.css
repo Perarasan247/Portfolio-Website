@@ -1,0 +1,226 @@
+.contact {
+  position: relative;
+  padding-bottom: var(--s-6);
+  overflow: hidden;
+}
+
+.contact::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -40%;
+  width: min(120vw, 1200px);
+  aspect-ratio: 2;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(180, 240, 90, 0.08), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.contact-grid {
+  display: grid;
+  gap: var(--s-7);
+}
+
+.contact-title {
+  font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4.25rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  max-width: 16ch;
+}
+
+.contact-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  margin-top: var(--s-6);
+}
+
+.socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.socials a:hover {
+  color: var(--text-1);
+}
+
+.socials svg,
+.btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Terminal */
+.terminal {
+  align-self: end;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  background: #090a0c;
+  box-shadow: 0 32px 64px -32px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: 10px var(--s-4);
+  border-bottom: 1px solid var(--line-1);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+.terminal-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.terminal-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--surface-3);
+}
+
+.terminal-ok {
+  margin-left: auto;
+  color: var(--accent);
+}
+
+.terminal-body {
+  padding: var(--s-4) var(--s-5) var(--s-5);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-2);
+}
+
+.t-line {
+  overflow-wrap: anywhere;
+}
+
+.t-indent {
+  padding-left: 2ch;
+}
+
+.t-gap {
+  margin-top: var(--s-3);
+}
+
+.t-dim {
+  color: var(--text-3);
+}
+
+.t-key {
+  color: var(--cyan);
+}
+
+.t-str {
+  color: var(--amber);
+}
+
+.terminal-email {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px var(--s-3);
+}
+
+.terminal-email a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-line);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.copy-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.copy-btn:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.copy-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Extend the copy button's hit area to 44px without changing its look. */
+.copy-btn::after {
+  content: '';
+  position: absolute;
+  inset: -6px -4px;
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-5);
+  margin-top: clamp(64px, 9vw, 112px);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line-1);
+  font-size: var(--fs-sm);
+  color: var(--text-3);
+}
+
+.footer-row .mono {
+  font-size: var(--fs-xs);
+}
+
+@media (min-width: 960px) {
+  .contact-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: end;
+    gap: var(--s-8);
+  }
+}
+
+/* The response prints line by line once the terminal is in view. */
+.reveal-ready .terminal .t-line,
+.reveal-ready .terminal .terminal-ok {
+  transition:
+    opacity 300ms var(--ease-out),
+    transform 300ms var(--ease-out);
+  transition-delay: calc(200ms + var(--i, 0) * 110ms);
+}
+
+.reveal-ready .terminal:not(.in) .t-line,
+.reveal-ready .terminal:not(.in) .terminal-ok {
+  opacity: 0;
+  transform: translateX(-6px);
+}
+
+.terminal-ok {
+  --i: 9;
+}

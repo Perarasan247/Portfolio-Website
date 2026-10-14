@@ -1,0 +1,240 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  height: var(--nav-h);
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+.nav.scrolled {
+  background: rgba(11, 12, 14, 0.82);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom-color: var(--line-1);
+}
+
+.nav-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-1);
+}
+
+.brand-tld {
+  color: var(--text-3);
+}
+
+/* A tiny 2×2 "feature map" — the site's mark. */
+.brand-mark {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background:
+    linear-gradient(var(--accent), var(--accent)) 0 0 / 8px 8px no-repeat,
+    linear-gradient(rgba(180, 240, 90, 0.45), rgba(180, 240, 90, 0.45)) 10px 0 / 8px 8px no-repeat,
+    linear-gradient(rgba(180, 240, 90, 0.2), rgba(180, 240, 90, 0.2)) 0 10px / 8px 8px no-repeat,
+    linear-gradient(rgba(180, 240, 90, 0.7), rgba(180, 240, 90, 0.7)) 10px 10px / 8px 8px no-repeat;
+}
+
+.nav-links {
+  display: none;
+  gap: 2px;
+  margin-inline: auto;
+}
+
+.nav-links a {
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.nav-links a:hover {
+  color: var(--text-1);
+}
+
+.nav-links a[aria-current] {
+  color: var(--text-1);
+  background: var(--surface-2);
+}
+
+.nav-end {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-left: auto;
+}
+
+.nav-cta {
+  display: none;
+  min-height: 38px;
+  padding-inline: 18px;
+}
+
+.nav-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-2);
+}
+
+.nav-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Training-run readout */
+.run-meter {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line-1);
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
+
+.run-spark {
+  overflow: visible;
+}
+
+.run-spark path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.run-spark path.run-spark-target {
+  stroke: var(--line-2);
+  stroke-dasharray: 2 2;
+}
+
+.run-loss {
+  min-width: 10.5ch;
+  color: var(--text-2);
+}
+
+.run-loss.done {
+  color: var(--accent);
+}
+
+.nav-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+}
+
+.nav-progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 0 50%;
+}
+
+/* Mobile sheet */
+.mobile-menu {
+  position: fixed;
+  inset: var(--nav-h) 0 0;
+  z-index: var(--z-sheet);
+  background: var(--bg);
+  border-top: 1px solid var(--line-1);
+  overflow-y: auto;
+  animation: menu-in var(--dur-base) var(--ease-out);
+}
+
+.mobile-menu[hidden] {
+  display: none;
+}
+
+.mobile-menu nav {
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-5) var(--gutter) var(--s-7);
+}
+
+.mobile-menu a:not(.btn) {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  min-height: 56px;
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--line-1);
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.mobile-menu a .mono {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
+
+.mobile-menu a[aria-current] {
+  color: var(--accent);
+}
+
+.mobile-menu .btn {
+  margin-top: var(--s-6);
+  min-height: 52px;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (min-width: 600px) {
+  .nav-cta {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 760px) {
+  .run-meter {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 960px) {
+  .nav-links {
+    display: flex;
+  }
+
+  .nav-end {
+    margin-left: 0;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1199px) {
+  .run-meter {
+    display: none;
+  }
+}

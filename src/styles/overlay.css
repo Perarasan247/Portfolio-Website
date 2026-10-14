@@ -1,0 +1,304 @@
+/* Dialogs: a side sheet for projects, a centered dialog for certificates.
+   On small screens both become bottom sheets. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: flex-end;
+  background: var(--scrim);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fade-in var(--dur-base) var(--ease-out);
+}
+
+.sheet,
+.dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: calc(100dvh - 24px);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: var(--surface-1);
+  box-shadow: var(--shadow-pop);
+  overflow: hidden;
+  animation: sheet-up var(--dur-slow) var(--ease-out);
+}
+
+.sheet-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  flex: none;
+  padding: 10px 10px 10px var(--s-5);
+  border-bottom: 1px solid var(--line-1);
+}
+
+.sheet-crumb {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: var(--r-md);
+  color: var(--text-2);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.icon-btn:hover {
+  background: var(--surface-3);
+  color: var(--text-1);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sheet-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sheet-media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-bottom: 1px solid var(--line-1);
+}
+
+.sheet-body {
+  display: grid;
+  gap: var(--s-5);
+  padding: var(--s-6) var(--s-5) var(--s-7);
+}
+
+.sheet-cat {
+  font-size: var(--fs-xs);
+  color: var(--amber);
+}
+
+.sheet-title {
+  margin-top: calc(-1 * var(--s-4));
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.sheet-lead {
+  font-size: var(--fs-md);
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.metrics-lg dd {
+  font-size: var(--fs-lg);
+}
+
+.case-flow {
+  display: grid;
+  gap: var(--s-5);
+}
+
+.case-flow li {
+  display: grid;
+  gap: var(--s-2);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line-1);
+}
+
+.case-flow h3 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: var(--fs-base);
+  font-weight: 600;
+}
+
+.case-flow h3 .mono {
+  font-size: var(--fs-xs);
+  color: var(--accent);
+}
+
+.case-flow p {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.75;
+}
+
+.sheet-cta,
+.dialog-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+/* Certificate dialog */
+.dialog-head {
+  display: flex;
+  gap: var(--s-4);
+  padding: var(--s-5);
+}
+
+.dialog-title {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.dialog-desc {
+  margin-top: 6px;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.cert-viewer {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0 var(--s-5);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.cert-frame {
+  display: none;
+  width: 100%;
+  height: min(62vh, 640px);
+  border: 0;
+  background: #fff;
+}
+
+.cert-img {
+  width: 100%;
+  max-height: 62vh;
+  object-fit: contain;
+}
+
+.cert-fallback {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-3);
+  padding: var(--s-7) var(--s-5);
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.cert-fallback[hidden] {
+  display: none;
+}
+
+.cert-fallback svg {
+  width: 32px;
+  height: 32px;
+  color: var(--text-3);
+}
+
+.dialog-cta {
+  padding: var(--s-5);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(32px);
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-left {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    transform: scale(0.97);
+    opacity: 0;
+  }
+}
+
+/* Inline PDF preview only where it is reliable: wide screens with a fine pointer. */
+@media (min-width: 760px) and (pointer: fine) {
+  .cert-frame {
+    display: block;
+  }
+
+  .cert-fallback.pdf {
+    display: none;
+  }
+}
+
+@media (min-width: 760px) {
+  .overlay-center {
+    align-items: center;
+    justify-content: center;
+    padding: var(--s-6);
+  }
+
+  .dialog {
+    max-width: 880px;
+    max-height: calc(100dvh - 64px);
+    border-radius: var(--r-lg);
+    animation-name: dialog-in;
+  }
+
+  .overlay:not(.overlay-center) {
+    justify-content: flex-end;
+    align-items: stretch;
+  }
+
+  .sheet {
+    width: min(720px, 92vw);
+    max-height: none;
+    height: 100%;
+    border-radius: 0;
+    border-left: 1px solid var(--line-2);
+    animation-name: sheet-left;
+  }
+
+  .sheet-body {
+    padding: var(--s-6) var(--s-6) var(--s-8);
+  }
+}
+
+.intro-empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-3);
+  padding: var(--s-9) var(--s-5);
+  text-align: center;
+  color: var(--text-2);
+}
+
+.intro-empty svg {
+  width: 32px;
+  height: 32px;
+  color: var(--text-3);
+}

@@ -1,13 +1,16 @@
 # Dependencies
 node_modules/
-package-lock.json
-package.json
+
+# Build output
+dist/
+*.tsbuildinfo
 
 # OS / Editor
 .DS_Store
 Thumbs.db
 desktop.ini
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 .idea/
 
 # Logs
@@ -16,6 +19,5 @@ npm-debug.log*
 
 # Local dev artifacts
 .cache/
-.parcel-cache/
-dist/
-build/
+.env
+.env.local
