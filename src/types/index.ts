@@ -54,6 +54,7 @@ export interface Experience {
   bullets: string[];
   stack: string[];
   ico: string;
+  logo?: string;
   cert?: string;
   now?: boolean;
 }
@@ -65,6 +66,7 @@ export interface Education {
   cgpa: string;
   bullets: string[];
   tags: string[];
+  logo?: string;
   current?: boolean;
 }
 

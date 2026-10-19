@@ -12,6 +12,7 @@ export const EXPERIENCE: Experience[] = [
     ],
     stack: ['Python', 'PyTorch', 'LangChain', 'FastAPI', 'AWS', 'Docker'],
     ico: 'AL',
+    logo: 'assets/alai labs logo.webp',
   },
   {
     when: 'Feb 2026 · May 2026',
@@ -25,6 +26,7 @@ export const EXPERIENCE: Experience[] = [
     ],
     stack: ['Python', 'PyTorch', 'LangChain', 'FastAPI', 'AWS', 'Docker'],
     ico: 'AL',
+    logo: 'assets/alai labs logo.webp',
   },
   {
     when: 'Dec 2025 · Mar 2026',
@@ -38,6 +40,7 @@ export const EXPERIENCE: Experience[] = [
     ],
     stack: ['Python', 'PyTorch', 'EfficientNet', 'YOLO', 'Flask', 'OpenCV'],
     ico: 'SR',
+    logo: 'assets/SRM logo.svg',
     cert: 'assets/certificates/Internship Certificates/project trainee at srm.pdf',
   },
 ];

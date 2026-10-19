@@ -10,6 +10,8 @@ interface LogEntryProps {
   tags: string[];
   latest?: boolean;
   action?: ReactNode;
+  logo?: string;
+  logoAlt?: string;
 }
 
 /** One checkpoint in a training-log style timeline. */
@@ -22,6 +24,8 @@ export function LogEntry({
   tags,
   latest,
   action,
+  logo,
+  logoAlt,
 }: LogEntryProps) {
   return (
     <li className="log-entry reveal" style={vars({ '--i': index })}>
@@ -31,8 +35,17 @@ export function LogEntry({
       </div>
       <span className="log-node" aria-hidden="true" />
       <article className="log-card">
-        <h3 className="log-title">{title}</h3>
-        <p className="log-org">{org}</p>
+        <div className="log-card-head">
+          <div className="log-card-titles">
+            <h3 className="log-title">{title}</h3>
+            <p className="log-org">{org}</p>
+          </div>
+          {logo && (
+            <div className="log-logo-badge">
+              <img src={logo} alt={logoAlt ?? ''} className="log-logo-img" loading="lazy" />
+            </div>
+          )}
+        </div>
         <ul className="log-bullets">
           {bullets.map((b) => (
             <li key={b}>{b}</li>

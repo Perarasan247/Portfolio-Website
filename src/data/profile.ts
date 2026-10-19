@@ -1,4 +1,5 @@
 import type { Profile } from '../types';
+import { PROJECTS } from './projects';
 import { SKILLS } from './skills';
 
 export const PROFILE: Profile = {
@@ -17,10 +18,10 @@ export const PROFILE: Profile = {
 };
 
 /** Areas shown under the hero tagline. */
-export const FOCUS_AREAS = ['Computer vision', 'LLM agents', 'RAG', 'MLOps'];
+export const FOCUS_AREAS = ['Computer vision', 'AI Agents', 'RAG', 'MLOps'];
 
 export const HIGHLIGHTS = [
-  { label: 'Projects shipped', value: '06' },
+  { label: 'Projects shipped', value: String(PROJECTS.length).padStart(2, '0') },
   { label: 'Roles held', value: '03' },
   { label: 'M.Sc CGPA', value: '9.15' },
   {

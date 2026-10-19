@@ -11,6 +11,7 @@ export const EDUCATION: Education[] = [
       'Coursework spans statistical modeling, deep learning, NLP, and cloud-based AI systems.',
     ],
     tags: ['Data Science', 'Machine Learning', 'Deep Learning', 'Research'],
+    logo: 'assets/SRM logo.svg',
   },
   {
     when: '2021 · 2024',
@@ -22,5 +23,6 @@ export const EDUCATION: Education[] = [
       'Developed projects in web development, database management, and basic ML.',
     ],
     tags: ['Programming', 'Databases', 'Web Development', 'Computer Science'],
+    logo: 'assets/AMJC logo.webp',
   },
 ];

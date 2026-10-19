@@ -1,4 +1,5 @@
 import { EDUCATION } from '../../data/education';
+import { asset } from '../../utils/asset';
 import { vars } from '../../utils/cssVars';
 import { LogEntry } from '../experience/LogEntry';
 
@@ -32,6 +33,8 @@ export function Education() {
                   <b>{e.institution}</b> · <span className="mono">CGPA {e.cgpa}</span>
                 </>
               }
+              logo={e.logo ? asset(e.logo) : undefined}
+              logoAlt={`${e.institution} logo`}
               bullets={e.bullets}
               tags={e.tags}
             />

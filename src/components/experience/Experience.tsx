@@ -1,5 +1,6 @@
 import { EXPERIENCE } from '../../data/experience';
 import type { Certificate, Experience as ExperienceItem } from '../../types';
+import { asset } from '../../utils/asset';
 import { vars } from '../../utils/cssVars';
 import { IconFile } from '../icons/Icons';
 import { LogEntry } from './LogEntry';
@@ -36,7 +37,7 @@ export function Experience({ onOpenCert }: ExperienceProps) {
             const cert = e.cert;
             return (
               <LogEntry
-                key={e.role}
+                key={`${e.co}-${e.role}`}
                 index={i}
                 latest={i === 0}
                 when={e.when}
@@ -46,6 +47,8 @@ export function Experience({ onOpenCert }: ExperienceProps) {
                     <b>{e.co}</b> · {e.where}
                   </>
                 }
+                logo={e.logo ? asset(e.logo) : undefined}
+                logoAlt={`${e.co} logo`}
                 bullets={e.bullets}
                 tags={e.stack}
                 action={

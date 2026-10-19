@@ -25,6 +25,12 @@ export const IconArrowRight = (p: IconProps) => (
   </Stroke>
 );
 
+export const IconArrowLeft = (p: IconProps) => (
+  <Stroke {...p}>
+    <path d="M19 12H5M11 18l-6-6 6-6" />
+  </Stroke>
+);
+
 export const IconArrowUpRight = (p: IconProps) => (
   <Stroke {...p}>
     <path d="M7 17 17 7M8 7h9v9" />
