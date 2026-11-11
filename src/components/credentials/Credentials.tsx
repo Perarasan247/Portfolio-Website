@@ -1,7 +1,8 @@
 import { ACHIEVEMENTS } from '../../data/achievements';
 import type { Certificate } from '../../types';
 import { vars } from '../../utils/cssVars';
-import { IconArrowRight } from '../icons/Icons';
+import { SplitText } from '../common/SplitText';
+import { IconArrowUpRight } from '../icons/Icons';
 
 interface CredentialsProps {
   onOpenCert: (cert: Certificate) => void;
@@ -13,33 +14,49 @@ export function Credentials({ onOpenCert }: CredentialsProps) {
       <div className="container">
         <div className="section-head">
           <div>
-            <p className="stage reveal">
-              <b>06</b> credentials · fine-tuning
+            <p className="eyebrow reveal">
+              <b>06</b> Credentials
             </p>
-            <h2 className="section-title reveal" id="credentials-title">
-              Certifications that shaped my thinking.
-            </h2>
+            <SplitText
+              as="h2"
+              id="credentials-title"
+              className="section-title"
+              by="words"
+              text={[
+                { t: 'Certifications that ' },
+                { t: 'shaped', className: 'serif' },
+                { t: ' my thinking.' },
+              ]}
+            />
           </div>
           <p className="section-sub reveal" style={vars({ '--i': 1 })}>
             Structured learning alongside applied work, from fundamentals to frontier AI.
           </p>
         </div>
 
-        <ul className="cred-grid">
+        <ul className="cred-list">
           {ACHIEVEMENTS.map((a, i) => (
-            <li key={a.title} className="reveal" style={vars({ '--i': i })}>
-              <button type="button" className="cred" onClick={() => onOpenCert(a)}>
-                <span className="cred-top">
-                  <span className="cred-ico mono" aria-hidden="true">
-                    {a.ico}
-                  </span>
-                  <span className="mono tabular cred-year">{a.year}</span>
+            <li key={a.title} className="reveal" style={vars({ '--i': i % 3 })}>
+              <button
+                type="button"
+                className="cred spot"
+                onClick={() => onOpenCert(a)}
+                data-cursor="View"
+              >
+                <span className="cred-idx mono tabular" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
                 </span>
-                <span className="cred-title">{a.title}</span>
+                <span className="cred-ico mono" aria-hidden="true">
+                  {a.ico}
+                </span>
+                <span className="cred-main">
+                  <span className="cred-title">{a.title}</span>
+                  <span className="cred-desc">{a.desc}</span>
+                </span>
                 <span className="cred-org">{a.org}</span>
-                <span className="cred-desc">{a.desc}</span>
-                <span className="cred-view mono">
-                  View certificate <IconArrowRight />
+                <span className="cred-year mono tabular">{a.year}</span>
+                <span className="cred-go" aria-hidden="true">
+                  <IconArrowUpRight />
                 </span>
               </button>
             </li>

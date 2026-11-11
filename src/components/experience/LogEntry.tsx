@@ -14,7 +14,7 @@ interface LogEntryProps {
   logoAlt?: string;
 }
 
-/** One checkpoint in a training-log style timeline. */
+/** One stop on the scroll-drawn timeline. */
 export function LogEntry({
   index,
   when,
@@ -28,30 +28,30 @@ export function LogEntry({
   logoAlt,
 }: LogEntryProps) {
   return (
-    <li className="log-entry reveal" style={vars({ '--i': index })}>
-      <div className="log-when mono tabular">
-        {latest && <span className="log-latest">latest</span>}
-        <span>{when.replace(' · ', ' — ')}</span>
+    <li className={'tl-item' + (latest ? ' latest' : '')} style={vars({ '--i': index })}>
+      <span className="tl-node" aria-hidden="true" />
+      <div className="tl-when reveal" data-anim="left">
+        <span className="mono tabular">{when.replace(' · ', ' — ')}</span>
+        {latest && <span className="tl-badge mono">Current</span>}
       </div>
-      <span className="log-node" aria-hidden="true" />
-      <article className="log-card">
-        <div className="log-card-head">
-          <div className="log-card-titles">
-            <h3 className="log-title">{title}</h3>
-            <p className="log-org">{org}</p>
-          </div>
+      <article className="tl-card spot spot-border reveal" data-anim="right">
+        <header className="tl-head">
           {logo && (
-            <div className="log-logo-badge">
-              <img src={logo} alt={logoAlt ?? ''} className="log-logo-img" loading="lazy" />
-            </div>
+            <span className="tl-logo">
+              <img src={logo} alt={logoAlt ?? ''} loading="lazy" />
+            </span>
           )}
-        </div>
-        <ul className="log-bullets">
+          <div>
+            <h3 className="tl-title">{title}</h3>
+            <p className="tl-org">{org}</p>
+          </div>
+        </header>
+        <ul className="tl-bullets">
           {bullets.map((b) => (
             <li key={b}>{b}</li>
           ))}
         </ul>
-        <div className="log-foot">
+        <div className="tl-foot">
           <div className="chip-row">
             {tags.map((t) => (
               <span className="chip" key={t}>

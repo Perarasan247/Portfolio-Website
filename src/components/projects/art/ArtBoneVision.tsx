@@ -1,8 +1,8 @@
 export function ArtBoneVision() {
   const boneFill = 'rgba(255,255,255,0.06)';
   const boneStroke = 'rgba(255,255,255,0.32)';
-  const hiFill = 'rgba(245,165,36,0.22)';
-  const hiStroke = 'rgba(245,165,36,0.95)';
+  const hiFill = 'rgba(255,170,140,0.22)';
+  const hiStroke = 'rgba(255,170,140,0.95)';
   return (
     <svg viewBox="0 0 240 300" preserveAspectRatio="xMidYMid meet" className="art-svg">
       <defs>
@@ -104,7 +104,7 @@ export function ArtBoneVision() {
       </g>
 
       {/* Length-measurement guide on 3rd metacarpal */}
-      <g stroke="rgba(245,165,36,0.75)" strokeWidth="1">
+      <g stroke="rgba(255,170,140,0.75)" strokeWidth="1">
         <line x1="131" y1="152" x2="139" y2="152" />
         <line x1="131" y1="246" x2="139" y2="246" />
         <line x1="135" y1="152" x2="135" y2="246" strokeDasharray="3 3" opacity="0.65" />
@@ -114,7 +114,7 @@ export function ArtBoneVision() {
       <g
         fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
         fontSize="9"
-        fill="rgba(245,165,36,0.9)"
+        fill="rgba(255,170,140,0.9)"
         textAnchor="middle"
         letterSpacing="0.05em"
       >

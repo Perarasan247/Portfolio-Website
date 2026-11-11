@@ -1,11 +1,42 @@
+import { useEffect, useState } from 'react';
 import { FOCUS_AREAS, HIGHLIGHTS, PROFILE } from '../../data/profile';
 import { asset } from '../../utils/asset';
 import { vars } from '../../utils/cssVars';
 import { CountUp } from '../common/CountUp';
-import { IconArrowRight, IconPlay } from '../icons/Icons';
+import { SplitText } from '../common/SplitText';
+import { NeuralCanvas } from '../fx/NeuralCanvas';
+import { IconArrowDown, IconArrowRight, IconPlay } from '../icons/Icons';
 
 interface HeroProps {
   onPlayIntro: () => void;
+}
+
+function Rotator({ words }: { words: string[] }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const t = window.setInterval(() => setI((n) => (n + 1) % words.length), 2400);
+    return () => window.clearInterval(t);
+  }, [words.length]);
+  return (
+    <span className="rotator" aria-live="off">
+      {words.map((w, n) => (
+        <span
+          key={w}
+          className={
+            n === i
+              ? 'rot-word on'
+              : n === (i - 1 + words.length) % words.length
+                ? 'rot-word out'
+                : 'rot-word'
+          }
+          aria-hidden={n !== i}
+        >
+          {w}
+        </span>
+      ))}
+    </span>
+  );
 }
 
 export function Hero({ onPlayIntro }: HeroProps) {
@@ -13,7 +44,13 @@ export function Hero({ onPlayIntro }: HeroProps) {
 
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
-      <div className="container hero-grid">
+      <div className="hero-bg" aria-hidden="true">
+        <NeuralCanvas />
+        <div className="hero-grid-lines" />
+        <div className="hero-vignette" />
+      </div>
+
+      <div className="container hero-layout">
         <div className="hero-copy">
           <p className="hero-status reveal">
             <span className="status-dot" aria-hidden="true" />
@@ -21,77 +58,84 @@ export function Hero({ onPlayIntro }: HeroProps) {
           </p>
 
           <h1 className="hero-title" id="hero-title">
-            <span className="hero-line">
-              <span style={vars({ '--l': 0 })}>{first}</span>
-            </span>
-            <span className="hero-line hero-title-last">
-              <span style={vars({ '--l': 1 })}>{rest.join(' ')}</span>
-            </span>
+            <SplitText text={first} className="hero-line" delay={1} />
+            <SplitText
+              text={[{ t: rest.join(' ') }, { t: '.', className: 'accent' }]}
+              className="hero-line hero-line-2"
+              delay={2}
+            />
           </h1>
 
-          <p className="hero-role reveal" style={vars({ '--i': 1 })}>
-            <span className="hero-role-bar" aria-hidden="true" />
+          <p className="hero-role reveal" style={vars({ '--i': 4 })}>
             <span className="hero-role-title">{PROFILE.role}</span>
-            <span className="hero-role-meta mono">@ Alai Labs</span>
+            <span className="hero-role-sep" aria-hidden="true" />
+            <span className="hero-role-build">
+              building <Rotator words={FOCUS_AREAS} />
+            </span>
           </p>
 
-          <p className="hero-tagline reveal" style={vars({ '--i': 2 })}>
+          <p className="hero-tagline reveal" style={vars({ '--i': 5 })}>
             {PROFILE.tagline}
           </p>
 
-          <ul className="focus reveal" style={vars({ '--i': 3 })} aria-label="Focus areas">
-            {FOCUS_AREAS.map((a) => (
-              <li key={a}>{a}</li>
-            ))}
-          </ul>
-
-          <div className="hero-cta reveal" style={vars({ '--i': 4 })}>
-            <a className="btn btn-primary" href="#projects">
-              View projects <IconArrowRight />
+          <div className="hero-cta reveal" style={vars({ '--i': 6 })}>
+            <a className="btn btn-primary" href="#projects" data-magnetic>
+              View my work <IconArrowRight />
             </a>
-            <a className="btn btn-ghost" href="#contact">
+            <a className="btn btn-ghost" href="#contact" data-magnetic>
               Get in touch
             </a>
           </div>
         </div>
 
-        <figure className="detect reveal" style={vars({ '--i': 2 })}>
-          <div className="detect-frame">
-            <img
-              src={asset('assets/portrait.webp')}
-              alt={'Portrait of ' + PROFILE.name}
-              width={768}
-              height={1376}
-            />
-            <div className="detect-box" aria-hidden="true">
-              <span className="detect-label mono">person · 0.99</span>
+        <figure className="portrait reveal" data-anim="clip" style={vars({ '--i': 3 })}>
+          <div className="portrait-tilt" data-tilt="8">
+            <div className="portrait-glow" aria-hidden="true" />
+            <div className="portrait-frame">
+              <img
+                src={asset('assets/portrait.webp')}
+                alt={'Portrait of ' + PROFILE.name}
+                width={768}
+                height={1376}
+                fetchPriority="high"
+              />
+              <div className="portrait-scan" aria-hidden="true" />
+              <span className="corner tl" aria-hidden="true" />
+              <span className="corner tr" aria-hidden="true" />
+              <span className="corner bl" aria-hidden="true" />
+              <span className="corner br" aria-hidden="true" />
+              <button type="button" className="intro-btn" onClick={onPlayIntro} data-cursor="Play">
+                <span className="intro-btn-icon" aria-hidden="true">
+                  <IconPlay />
+                </span>
+                Watch my intro
+              </button>
             </div>
-            <div className="detect-scan" aria-hidden="true" />
-            <button type="button" className="intro-btn" onClick={onPlayIntro}>
-              <span className="intro-btn-icon" aria-hidden="true">
-                <IconPlay />
-              </span>
-              Click to watch my intro
-            </button>
           </div>
-          <figcaption className="detect-meta mono">
-            <span>input · portrait</span>
+          <figcaption className="portrait-meta mono">
             <span>{PROFILE.location}</span>
+            <span>@ Alai Labs</span>
           </figcaption>
         </figure>
       </div>
 
-      <div className="container">
+      <div className="container hero-foot">
         <dl className="highlights">
           {HIGHLIGHTS.map((h, i) => (
-            <div className="highlight reveal" key={h.label} style={vars({ '--i': i })}>
+            <div className="highlight reveal" key={h.label} style={vars({ '--i': 6 + i })}>
               <dt>{h.label}</dt>
-              <dd className="mono tabular">
+              <dd className="tabular">
                 <CountUp value={h.value} />
               </dd>
             </div>
           ))}
         </dl>
+        <a className="scroll-cue reveal" href="#about" style={vars({ '--i': 9 })}>
+          <span className="scroll-cue-track" aria-hidden="true">
+            <IconArrowDown />
+          </span>
+          <span className="mono">Scroll</span>
+        </a>
       </div>
     </section>
   );

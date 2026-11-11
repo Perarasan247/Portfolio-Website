@@ -20,7 +20,7 @@ export function ArtPilot() {
           </feMerge>
         </filter>
       </defs>
-      <g stroke="rgba(92,200,240,0.5)" strokeWidth="1" strokeDasharray="3 3" fill="none">
+      <g stroke="rgba(127,209,174,0.5)" strokeWidth="1" strokeDasharray="3 3" fill="none">
         {agents.map((a) => (
           <line key={a.name} x1={a.x} y1={a.y} x2={cx} y2={cy} />
         ))}
@@ -30,8 +30,8 @@ export function ArtPilot() {
           cx={cx}
           cy={cy}
           r="30"
-          fill="rgba(180,240,90,0.22)"
-          stroke="rgba(180,240,90,0.95)"
+          fill="rgba(238,90,80,0.22)"
+          stroke="rgba(238,90,80,0.95)"
           strokeWidth="1.6"
           filter="url(#pl-glow)"
         />
@@ -40,7 +40,7 @@ export function ArtPilot() {
           cy={cy}
           r="20"
           fill="none"
-          stroke="rgba(180,240,90,0.4)"
+          stroke="rgba(238,90,80,0.4)"
           strokeWidth="0.8"
           strokeDasharray="2 2"
         />
@@ -78,8 +78,8 @@ export function ArtPilot() {
               width={w}
               height={26}
               rx={5}
-              fill={isOrch ? 'rgba(245,165,36,0.18)' : 'rgba(7,6,17,0.65)'}
-              stroke={isOrch ? 'rgba(245,165,36,0.95)' : 'rgba(92,200,240,0.7)'}
+              fill={isOrch ? 'rgba(255,170,140,0.18)' : 'rgba(6,17,12,0.65)'}
+              stroke={isOrch ? 'rgba(255,170,140,0.95)' : 'rgba(127,209,174,0.7)'}
               strokeWidth="1"
             />
             <text
@@ -87,7 +87,7 @@ export function ArtPilot() {
               y={a.y + 4}
               fontFamily={mono}
               fontSize="10"
-              fill={isOrch ? 'rgba(245,165,36,0.98)' : 'rgba(92,200,240,0.95)'}
+              fill={isOrch ? 'rgba(255,170,140,0.98)' : 'rgba(127,209,174,0.95)'}
               textAnchor="middle"
               fontWeight="700"
             >

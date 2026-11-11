@@ -1,7 +1,10 @@
+import { useRef } from 'react';
 import { EXPERIENCE } from '../../data/experience';
+import { useScrollVar } from '../../hooks/useScrollVar';
 import type { Certificate, Experience as ExperienceItem } from '../../types';
 import { asset } from '../../utils/asset';
 import { vars } from '../../utils/cssVars';
+import { SplitText } from '../common/SplitText';
 import { IconFile } from '../icons/Icons';
 import { LogEntry } from './LogEntry';
 
@@ -14,25 +17,36 @@ function toCertificate(e: ExperienceItem, cert: string): Certificate {
 }
 
 export function Experience({ onOpenCert }: ExperienceProps) {
+  const lineRef = useRef<HTMLOListElement>(null);
+  useScrollVar(lineRef, 0.7, 0.6);
+
   return (
     <section className="section" id="experience" aria-labelledby="experience-title">
       <div className="container">
         <div className="section-head">
           <div>
-            <p className="stage reveal">
-              <b>04</b> experience · training log
+            <p className="eyebrow reveal">
+              <b>04</b> Experience
             </p>
-            <h2 className="section-title reveal" id="experience-title">
-              A short, deliberate path through ML and shipping.
-            </h2>
+            <SplitText
+              as="h2"
+              id="experience-title"
+              className="section-title"
+              by="words"
+              text={[
+                { t: 'A short, ' },
+                { t: 'deliberate', className: 'serif' },
+                { t: ' path through ML and shipping.' },
+              ]}
+            />
           </div>
           <p className="section-sub reveal" style={vars({ '--i': 1 })}>
-            From project trainee to AI intern to ML engineer, building computer vision, LLM, and RAG
-            systems.
+            From project trainee to AI intern to ML engineer — building computer vision, LLM, and
+            RAG systems.
           </p>
         </div>
 
-        <ol className="log" data-reveal>
+        <ol className="timeline" ref={lineRef}>
           {EXPERIENCE.map((e, i) => {
             const cert = e.cert;
             return (

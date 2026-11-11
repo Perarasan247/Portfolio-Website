@@ -1,96 +1,132 @@
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { DOMAIN_LABELS, PROJECTS } from '../../data/projects';
 import type { Project, ProjectDomain } from '../../types';
 import { vars } from '../../utils/cssVars';
-import { IconArrowLeft, IconArrowRight, IconArrowUpRight } from '../icons/Icons';
+import { SplitText } from '../common/SplitText';
+import { IconArrowUpRight } from '../icons/Icons';
 import { ProjectArt } from './ProjectArt';
 
-const FILTERS: Array<ProjectDomain | 'all'> = ['all', 'cv', 'agents', 'ml'];
-const PAGE_SIZE = 6;
-
-function getPageNumbers(current: number, total: number): Array<number | '...'> {
-  if (total <= 7) {
-    return Array.from({ length: total }, (_, i) => i + 1);
-  }
-  if (current <= 4) {
-    return [1, 2, 3, 4, 5, '...', total];
-  }
-  if (current >= total - 3) {
-    return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
-  }
-  return [1, '...', current - 1, current, current + 1, '...', total];
-}
+type Filter = ProjectDomain | 'all';
+const FILTERS: Filter[] = ['all', 'cv', 'agents', 'ml'];
 
 interface ProjectsProps {
   onSelect: (project: Project) => void;
 }
 
+function ProjectCard({
+  project,
+  index,
+  onSelect,
+}: {
+  project: Project;
+  index: number;
+  onSelect: () => void;
+}) {
+  const num = String(PROJECTS.indexOf(project) + 1).padStart(2, '0');
+  return (
+    <li
+      className={'pcard-wrap reveal' + (project.featured ? ' featured' : '')}
+      style={vars({ '--i': index % 3 })}
+    >
+      <button
+        type="button"
+        className="pcard spot spot-border"
+        onClick={onSelect}
+        data-tilt="5"
+        data-cursor="Explore"
+        aria-label={project.title + ' — open case study'}
+      >
+        <span className="pcard-media">
+          <ProjectArt project={project} />
+          <span className="pcard-num mono" aria-hidden="true">
+            {num}
+          </span>
+          {project.tag && <span className="pcard-tag mono">{project.tag}</span>}
+        </span>
+        <span className="pcard-body">
+          <span className="pcard-cat mono">{project.cat}</span>
+          <span className="pcard-title">{project.title}</span>
+          <span className="pcard-blurb">{project.blurb}</span>
+          <span className="pcard-metrics">
+            {project.impact.slice(0, project.featured ? 3 : 2).map((m) => (
+              <span className="pcard-metric" key={m.l}>
+                <b className="tabular">{m.v}</b>
+                <small>{m.l}</small>
+              </span>
+            ))}
+          </span>
+          <span className="pcard-foot">
+            <span className="chip-row">
+              {project.stack.slice(0, project.featured ? 5 : 3).map((s) => (
+                <span className="chip" key={s}>
+                  {s}
+                </span>
+              ))}
+            </span>
+            <span className="pcard-go" aria-hidden="true">
+              <IconArrowUpRight />
+            </span>
+          </span>
+        </span>
+      </button>
+    </li>
+  );
+}
+
 export function Projects({ onSelect }: ProjectsProps) {
-  const [filter, setFilter] = useState<ProjectDomain | 'all'>('all');
-  const [currentPage, setCurrentPage] = useState(1);
-
+  const [filter, setFilter] = useState<Filter>('all');
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const [pill, setPill] = useState({ x: 0, w: 0 });
   const visible = filter === 'all' ? PROJECTS : PROJECTS.filter((p) => p.domain === filter);
-  const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
-  const validPage = Math.min(currentPage, totalPages);
-  const startIndex = (validPage - 1) * PAGE_SIZE;
-  const paginatedProjects = visible.slice(startIndex, startIndex + PAGE_SIZE);
 
-  const [previewId, setPreviewId] = useState(PROJECTS[0]?.id ?? '');
-  const preview =
-    paginatedProjects.find((p) => p.id === previewId) ??
-    paginatedProjects[0] ??
-    visible[0] ??
-    PROJECTS[0];
-
-  const handleFilterChange = (f: ProjectDomain | 'all') => {
-    setFilter(f);
-    setCurrentPage(1);
-    const nextVisible = f === 'all' ? PROJECTS : PROJECTS.filter((p) => p.domain === f);
-    if (nextVisible[0]) {
-      setPreviewId(nextVisible[0].id);
-    }
-  };
-
-  const goToPage = (page: number) => {
-    if (page < 1 || page > totalPages || page === validPage) return;
-    setCurrentPage(page);
-    const newStart = (page - 1) * PAGE_SIZE;
-    const nextProject = visible[newStart];
-    if (nextProject) {
-      setPreviewId(nextProject.id);
-    }
-    const el = document.getElementById('projects');
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < 0) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
-
-  const fromCount = visible.length === 0 ? 0 : startIndex + 1;
-  const toCount = Math.min(startIndex + PAGE_SIZE, visible.length);
-  const pageNumbers = getPageNumbers(validPage, totalPages);
+  useLayoutEffect(() => {
+    const measure = () => {
+      const btn = tabsRef.current?.querySelector<HTMLElement>('[aria-pressed="true"]');
+      if (btn) setPill({ x: btn.offsetLeft, w: btn.offsetWidth });
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    document.fonts?.ready.then(measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [filter]);
 
   return (
-    <section className="section" id="projects" aria-labelledby="projects-title">
+    <section className="section projects" id="projects" aria-labelledby="projects-title">
       <div className="container">
         <div className="section-head">
           <div>
-            <p className="stage reveal">
-              <b>03</b> projects · experiment runs
+            <p className="eyebrow reveal">
+              <b>03</b> Selected work
             </p>
-            <h2 className="section-title reveal" id="projects-title">
-              Projects that shipped, taught, or surprised me.
-            </h2>
+            <SplitText
+              as="h2"
+              id="projects-title"
+              className="section-title"
+              by="words"
+              text={[
+                { t: 'Projects that shipped, taught, or ' },
+                { t: 'surprised', className: 'serif' },
+                { t: ' me.' },
+              ]}
+            />
           </div>
           <p className="section-sub reveal" style={vars({ '--i': 1 })}>
-            Open any run for the full case study: the problem, the approach, and the measured
+            Open any project for the full case study — the problem, the approach, and the measured
             impact.
           </p>
         </div>
 
-        <div className="filters reveal" role="group" aria-label="Filter projects by domain">
+        <div
+          className="tabs reveal"
+          role="group"
+          aria-label="Filter projects by domain"
+          ref={tabsRef}
+        >
+          <span
+            className="tabs-pill"
+            style={vars({ '--x': pill.x + 'px', '--w': pill.w + 'px' })}
+            aria-hidden="true"
+          />
           {FILTERS.map((f) => {
             const count =
               f === 'all' ? PROJECTS.length : PROJECTS.filter((p) => p.domain === f).length;
@@ -98,147 +134,21 @@ export function Projects({ onSelect }: ProjectsProps) {
               <button
                 key={f}
                 type="button"
-                className="filter"
                 aria-pressed={filter === f}
-                onClick={() => handleFilterChange(f)}
+                onClick={() => setFilter(f)}
               >
-                {f === 'all' ? 'All runs' : DOMAIN_LABELS[f]}
-                <span className="mono tabular">{count}</span>
+                {f === 'all' ? 'All work' : DOMAIN_LABELS[f]}
+                <sup className="mono tabular">{count}</sup>
               </button>
             );
           })}
         </div>
 
-        <div className="runs">
-          <div className="runs-table">
-            <div className="runs-header mono" aria-hidden="true">
-              <span>run</span>
-              <span>name</span>
-              <span>domain</span>
-              <span>headline metric</span>
-            </div>
-            <ul className="runs-list">
-              {paginatedProjects.map((p, i) => {
-                const idx = PROJECTS.indexOf(p) + 1;
-                return (
-                  <li key={p.id} className="reveal" style={vars({ '--i': i })}>
-                    <button
-                      type="button"
-                      className="run"
-                      aria-current={preview?.id === p.id ? 'true' : undefined}
-                      onClick={() => onSelect(p)}
-                      onMouseEnter={() => setPreviewId(p.id)}
-                      onFocus={() => setPreviewId(p.id)}
-                      aria-label={p.title + ' — open case study'}
-                    >
-                      <span className="run-thumb">
-                        <ProjectArt project={p} />
-                      </span>
-                      <span className="run-id mono tabular">
-                        run_{String(idx).padStart(2, '0')}
-                      </span>
-                      <span className="run-main">
-                        <span className="run-title">{p.title}</span>
-                        <span className="run-blurb">{p.blurb}</span>
-                      </span>
-                      <span className="run-domain">
-                        <span className="chip">{DOMAIN_LABELS[p.domain]}</span>
-                      </span>
-                      <span className="run-metric">
-                        <span className="mono tabular">{p.impact[0].v}</span>
-                        <span>{p.impact[0].l}</span>
-                      </span>
-                      <span className="run-go" aria-hidden="true">
-                        <IconArrowRight />
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <nav className="runs-pagination" aria-label="Projects pagination">
-              <div className="pagination-info">
-                Showing{' '}
-                <span className="mono tabular">
-                  {fromCount}–{toCount}
-                </span>{' '}
-                of <span className="mono tabular">{visible.length}</span> runs
-              </div>
-
-              <div className="pagination-controls">
-                <button
-                  type="button"
-                  className="pagination-btn pagination-btn-nav"
-                  disabled={validPage <= 1}
-                  onClick={() => goToPage(validPage - 1)}
-                  aria-label="Previous page"
-                >
-                  <IconArrowLeft /> Prev
-                </button>
-
-                {pageNumbers.map((item, idx) =>
-                  item === '...' ? (
-                    <span key={`dots-${idx}`} className="pagination-ellipsis" aria-hidden="true">
-                      ···
-                    </span>
-                  ) : (
-                    <button
-                      key={item}
-                      type="button"
-                      className="pagination-btn"
-                      aria-current={validPage === item ? 'page' : undefined}
-                      onClick={() => goToPage(item)}
-                      aria-label={`Page ${item}`}
-                    >
-                      {item}
-                    </button>
-                  )
-                )}
-
-                <button
-                  type="button"
-                  className="pagination-btn pagination-btn-nav"
-                  disabled={validPage >= totalPages}
-                  onClick={() => goToPage(validPage + 1)}
-                  aria-label="Next page"
-                >
-                  Next <IconArrowRight />
-                </button>
-              </div>
-            </nav>
-          </div>
-
-          {preview && (
-            <aside className="run-preview" aria-hidden="true">
-              <div className="run-preview-inner" key={preview.id}>
-                <ProjectArt project={preview} />
-                <div className="run-preview-body">
-                  <p className="mono run-preview-cat">{preview.cat}</p>
-                  <h3>{preview.title}</h3>
-                  <dl className="metrics">
-                    {preview.impact.map((m) => (
-                      <div key={m.l}>
-                        <dd className="mono tabular">{m.v}</dd>
-                        <dt>{m.l}</dt>
-                      </div>
-                    ))}
-                  </dl>
-                  <div className="chip-row">
-                    {preview.stack.slice(0, 5).map((s) => (
-                      <span className="chip" key={s}>
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="run-preview-hint mono">
-                    click to open case study <IconArrowUpRight />
-                  </p>
-                </div>
-              </div>
-            </aside>
-          )}
-        </div>
+        <ul className="pgrid" key={filter}>
+          {visible.map((p, i) => (
+            <ProjectCard key={p.id} project={p} index={i} onSelect={() => onSelect(p)} />
+          ))}
+        </ul>
       </div>
     </section>
   );

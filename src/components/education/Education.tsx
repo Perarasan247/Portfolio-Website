@@ -1,7 +1,8 @@
 import { EDUCATION } from '../../data/education';
 import { asset } from '../../utils/asset';
 import { vars } from '../../utils/cssVars';
-import { LogEntry } from '../experience/LogEntry';
+import { CountUp } from '../common/CountUp';
+import { SplitText } from '../common/SplitText';
 
 export function Education() {
   return (
@@ -9,37 +10,69 @@ export function Education() {
       <div className="container">
         <div className="section-head">
           <div>
-            <p className="stage reveal">
-              <b>05</b> education · pre-training
+            <p className="eyebrow reveal">
+              <b>05</b> Education
             </p>
-            <h2 className="section-title reveal" id="education-title">
-              Where the foundation was built.
-            </h2>
+            <SplitText
+              as="h2"
+              id="education-title"
+              className="section-title"
+              by="words"
+              text={[
+                { t: 'Where the ' },
+                { t: 'foundation', className: 'serif' },
+                { t: ' was built.' },
+              ]}
+            />
           </div>
           <p className="section-sub reveal" style={vars({ '--i': 1 })}>
             Academic grounding in computer science and applied data science.
           </p>
         </div>
 
-        <ol className="log" data-reveal>
-          {EDUCATION.map((e, i) => (
-            <LogEntry
-              key={e.degree}
-              index={i}
-              when={e.when}
-              title={e.degree}
-              org={
-                <>
-                  <b>{e.institution}</b> · <span className="mono">CGPA {e.cgpa}</span>
-                </>
-              }
-              logo={e.logo ? asset(e.logo) : undefined}
-              logoAlt={`${e.institution} logo`}
-              bullets={e.bullets}
-              tags={e.tags}
-            />
-          ))}
-        </ol>
+        <ul className="edu-grid">
+          {EDUCATION.map((e, i) => {
+            const [score, scale] = e.cgpa.split('/').map((s) => s.trim());
+            return (
+              <li key={e.degree} className="reveal" data-anim="scale" style={vars({ '--i': i })}>
+                <article className="edu-card spot spot-border">
+                  <header className="edu-top">
+                    {e.logo && (
+                      <span className="edu-logo">
+                        <img src={asset(e.logo)} alt={`${e.institution} logo`} loading="lazy" />
+                      </span>
+                    )}
+                    <span className="mono edu-when">{e.when.replace(' · ', ' — ')}</span>
+                  </header>
+                  <h3 className="edu-degree">{e.degree}</h3>
+                  <p className="edu-inst">{e.institution}</p>
+                  <div className="edu-score">
+                    <span className="edu-cgpa tabular">
+                      <CountUp value={score} />
+                    </span>
+                    <span className="mono">
+                      / {scale}
+                      <br />
+                      CGPA
+                    </span>
+                  </div>
+                  <ul className="edu-bullets">
+                    {e.bullets.map((b) => (
+                      <li key={b}>{b}</li>
+                    ))}
+                  </ul>
+                  <div className="chip-row">
+                    {e.tags.map((t) => (
+                      <span className="chip" key={t}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );

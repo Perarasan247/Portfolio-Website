@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { SKILLS } from '../../data/skills';
 import type { Skill } from '../../types';
 import { vars } from '../../utils/cssVars';
+import { Marquee } from '../common/Marquee';
+import { SplitText } from '../common/SplitText';
 
 type Level = Skill['l'];
 
@@ -14,33 +16,44 @@ const COUNTS: Record<Level, number> = {
   2: ALL_SKILLS.filter((s) => s.l === 2).length,
   1: ALL_SKILLS.filter((s) => s.l === 1).length,
 };
-
-// Within each row, most-used first so every row reads as a gradient.
 const ROWS = SKILLS.map((c) => ({ ...c, items: [...c.items].sort((a, b) => b.l - a.l) }));
-const WIDEST = Math.max(...ROWS.map((r) => r.items.length));
+const BLURBS: Record<string, string> = {
+  'Languages & Frameworks': 'The everyday toolkit for APIs, data, and shipping.',
+  'Machine Learning & AI': 'Modeling, vision, and NLP — from notebooks to trained weights.',
+  'Generative AI': 'LLM apps, retrieval, and multi-agent orchestration.',
+  'Cloud & DevOps': 'Containers, pipelines, and experiment tracking.',
+};
 
 export function Skills() {
   const [focus, setFocus] = useState<Level | null>(null);
 
   return (
-    <section className="section" id="skills" aria-labelledby="skills-title">
+    <section className="section skills" id="skills" aria-labelledby="skills-title">
       <div className="container">
         <div className="section-head">
           <div>
-            <p className="stage reveal">
-              <b>02</b> stack · weight matrix
+            <p className="eyebrow reveal">
+              <b>02</b> Stack
             </p>
-            <h2 className="section-title reveal" id="skills-title">
-              Tools I reach for, weighted by how often they end up in production.
-            </h2>
+            <SplitText
+              as="h2"
+              id="skills-title"
+              className="section-title"
+              by="words"
+              text={[
+                { t: 'Tools I reach for, ' },
+                { t: 'weighted', className: 'serif' },
+                { t: ' by how often they ship.' },
+              ]}
+            />
           </div>
           <p className="section-sub reveal" style={vars({ '--i': 1 })}>
-            Comfortable across the ML stack, from data pipelines to deployment. Brighter cells are
-            the ones I use most.
+            Comfortable across the ML stack, from data pipelines to deployment. Filter by how often
+            I use each tool.
           </p>
         </div>
 
-        <div className="matrix-legend reveal" role="group" aria-label="Highlight skills by usage">
+        <div className="seg reveal" role="group" aria-label="Highlight skills by usage">
           <button type="button" aria-pressed={focus === null} onClick={() => setFocus(null)}>
             All <span className="mono tabular">{ALL_SKILLS.length}</span>
           </button>
@@ -51,56 +64,65 @@ export function Skills() {
               aria-pressed={focus === l}
               onClick={() => setFocus(focus === l ? null : l)}
             >
-              <span className="swatch" data-level={l} aria-hidden="true" />
+              <span className="lvl" data-level={l} aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
               {LEVEL_NAMES[l]} <span className="mono tabular">{COUNTS[l]}</span>
             </button>
           ))}
         </div>
 
-        <div className="matrix" data-reveal data-focus={focus ?? undefined}>
-          <div className="matrix-bar mono" aria-hidden="true">
-            <span>weights.npy</span>
-            <span>
-              shape ({ROWS.length} × {WIDEST}) · sorted by usage
-            </span>
-          </div>
-
-          <div className="matrix-rows">
-            {ROWS.map((row, r) => (
-              <div className="matrix-row" key={row.cat}>
-                <h3 className="matrix-label" style={vars({ '--d': r * 2 })}>
-                  <span className="mono matrix-num">{row.num}</span>
-                  <span>{row.cat}</span>
-                  <span className="mono matrix-count">{row.items.length}</span>
-                </h3>
-                <ul className="matrix-cells">
-                  {row.items.map((s, c) => (
-                    <li
-                      key={s.n}
-                      className="cell"
-                      data-level={s.l}
-                      style={vars({ '--d': r * 2 + c })}
-                    >
-                      <span className="cell-name">{s.n}</span>
-                      <span className="cell-pips" aria-hidden="true">
-                        <i />
-                        <i />
-                        <i />
-                      </span>
-                      <span className="sr-only">, {LEVEL_NAMES[s.l]}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="matrix-scale mono" aria-hidden="true">
-            <span>familiar</span>
-            <span className="matrix-scale-bar" />
-            <span>daily</span>
-          </div>
+        <div className="bento" data-focus={focus ?? undefined}>
+          {ROWS.map((row, r) => (
+            <article
+              className="bento-card spot spot-border reveal"
+              key={row.cat}
+              style={vars({ '--i': r })}
+              data-anim="blur"
+            >
+              <header className="bento-head">
+                <span className="bento-num mono">{row.num}</span>
+                <span className="bento-count mono tabular">
+                  {row.items.length} <small>tools</small>
+                </span>
+              </header>
+              <h3 className="bento-title">{row.cat}</h3>
+              <p className="bento-blurb">{BLURBS[row.cat]}</p>
+              <ul className="pills">
+                {row.items.map((s, c) => (
+                  <li key={s.n} className="pill" data-level={s.l} style={vars({ '--c': c })}>
+                    <span>{s.n}</span>
+                    <span className="lvl" data-level={s.l} aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                    </span>
+                    <span className="sr-only">, {LEVEL_NAMES[s.l]}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
         </div>
+      </div>
+
+      <div className="skills-strip" aria-hidden="true">
+        <Marquee speed={60}>
+          {ALL_SKILLS.map((s) => (
+            <span className="strip-item" key={s.n}>
+              {s.n}
+            </span>
+          ))}
+        </Marquee>
+        <Marquee speed={70} reverse>
+          {[...ALL_SKILLS].reverse().map((s) => (
+            <span className="strip-item outline" key={s.n}>
+              {s.n}
+            </span>
+          ))}
+        </Marquee>
       </div>
     </section>
   );

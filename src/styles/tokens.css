@@ -1,51 +1,56 @@
 /* ===========================================================
-   Design tokens — "training run" theme
-   Graphite plotting paper, a lime run-signal, amber attention.
+   Design tokens — "Obsidian & Crimson"
+   Green-black depth (#06110C), neutral graphite surfaces (#171717),
+   and a deep crimson signal (#A31C1B) with a brighter tint for text.
    =========================================================== */
 
 :root {
   color-scheme: dark;
 
-  /* Surfaces (base → elevated) */
-  --bg: #0b0c0e;
-  --surface-1: #111316;
-  --surface-2: #171a1e;
-  --surface-3: #1e2227;
-  --scrim: rgba(5, 6, 8, 0.78);
+  /* Surfaces */
+  --bg: #06110c;
+  --bg-2: #0a1712;
+  --surface-1: #121413;
+  --surface-2: #171717;
+  --surface-3: #202020;
+  --scrim: rgba(3, 8, 6, 0.82);
 
   /* Text — all ≥ 4.5:1 on --bg and --surface-2 */
-  --text-1: #eceef0;
-  --text-2: #a9afb7;
-  --text-3: #858c96;
+  --text-1: #f3efe9;
+  --text-2: #b9b5ae;
+  --text-3: #8f8b85;
 
   /* Lines */
-  --line-1: rgba(255, 255, 255, 0.07);
-  --line-2: rgba(255, 255, 255, 0.13);
-  --line-3: rgba(255, 255, 255, 0.22);
+  --line-1: rgba(243, 239, 233, 0.07);
+  --line-2: rgba(243, 239, 233, 0.12);
+  --line-3: rgba(243, 239, 233, 0.22);
 
-  /* Signal colors */
-  --accent: #b4f05a;
-  --accent-ink: #0b0c0e;
-  --accent-soft: rgba(180, 240, 90, 0.12);
-  --accent-line: rgba(180, 240, 90, 0.35);
-  --amber: #f5a524;
-  --amber-soft: rgba(245, 165, 36, 0.12);
-  --cyan: #5cc8f0;
-  --cyan-soft: rgba(92, 200, 240, 0.12);
+  /* Crimson signal */
+  --crimson: #a31c1b;
+  --crimson-deep: #6e1110;
+  --crimson-hi: #ee5a50; /* text-safe tint */
+  --crimson-soft: rgba(163, 28, 27, 0.16);
+  --crimson-line: rgba(238, 90, 80, 0.38);
+  --crimson-glow: rgba(163, 28, 27, 0.55);
+
+  /* Secondary (used sparingly, in art & status) */
+  --mint: #7fd1ae;
+  --mint-soft: rgba(127, 209, 174, 0.12);
 
   /* Type */
   --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
 
-  --fs-xs: 0.75rem; /* 12 — mono labels only */
-  --fs-sm: 0.875rem; /* 14 */
-  --fs-base: 1rem; /* 16 */
-  --fs-md: 1.125rem; /* 18 */
-  --fs-lg: 1.375rem; /* 22 */
-  --fs-xl: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
-  --fs-display: clamp(3rem, 1.6rem + 7vw, 7.5rem);
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: clamp(2rem, 1.2rem + 3vw, 3.75rem);
+  --fs-display: clamp(3.25rem, 1rem + 9.5vw, 10rem);
 
-  /* Spacing — 4pt scale */
+  /* Spacing */
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
@@ -55,28 +60,32 @@
   --s-7: 48px;
   --s-8: 64px;
   --s-9: 96px;
-  --s-10: 128px;
+  --s-10: 140px;
 
-  --gutter: clamp(16px, 4vw, 48px);
-  --container: 1240px;
-  --nav-h: 64px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --container: 1280px;
+  --nav-h: 72px;
 
   /* Shape & depth */
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 16px;
-  --shadow-pop: 0 24px 64px -16px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--line-2);
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-xl: 32px;
+  --shadow-pop: 0 30px 80px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--line-2);
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --dur-fast: 140ms;
-  --dur-base: 240ms;
-  --dur-slow: 520ms;
+  --dur-fast: 160ms;
+  --dur-base: 300ms;
+  --dur-slow: 700ms;
 
   /* Layers */
   --z-nav: 40;
-  --z-sheet: 60;
+  --z-menu: 50;
   --z-modal: 100;
+  --z-cursor: 200;
+  --z-loader: 300;
 }

@@ -1,0 +1,262 @@
+/* ===========================================================
+   Experience timeline + Education cards
+   =========================================================== */
+
+.timeline {
+  --p: 0;
+  --rail: 20px;
+  position: relative;
+  display: grid;
+  gap: clamp(28px, 4vw, 48px);
+}
+.timeline::before,
+.timeline::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: var(--rail);
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 2px;
+}
+.timeline::before {
+  background: var(--line-1);
+}
+.timeline::after {
+  background: linear-gradient(to bottom, var(--crimson-hi), var(--crimson));
+  box-shadow: 0 0 16px var(--crimson-glow);
+  transform-origin: top;
+  transform: scaleY(var(--p));
+}
+
+.tl-item {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  padding-left: calc(var(--rail) + 28px);
+}
+.tl-node {
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  left: var(--rail);
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--line-3);
+  transition:
+    border-color 0.5s,
+    background 0.5s,
+    box-shadow 0.5s;
+}
+.tl-item:has(.tl-card.in) .tl-node {
+  border-color: var(--crimson-hi);
+  background: var(--crimson);
+  box-shadow: 0 0 0 6px var(--crimson-soft);
+}
+.tl-item.latest .tl-node::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--crimson-hi);
+  animation: ping 2s var(--ease-out) infinite;
+}
+
+.tl-when {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+.tl-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--crimson-soft);
+  border: 1px solid var(--crimson-line);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--crimson-hi);
+}
+
+@media (min-width: 900px) {
+  .timeline {
+    --rail: 220px;
+  }
+  .tl-item {
+    grid-template-columns: calc(var(--rail) - 40px) 1fr;
+    gap: 80px;
+    padding-left: 0;
+  }
+  .tl-when {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    text-align: right;
+    padding-top: 2px;
+  }
+}
+
+.tl-card {
+  padding: clamp(22px, 3vw, 32px);
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface-1));
+  overflow: hidden;
+}
+.tl-card:hover {
+  translate: 6px 0;
+}
+.tl-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.tl-logo,
+.edu-logo {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  padding: 8px;
+  border-radius: 14px;
+  background: #f3efe9;
+  overflow: hidden;
+}
+.tl-logo img,
+.edu-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.tl-title {
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+.tl-org {
+  margin-top: 2px;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+.tl-org b {
+  font-weight: 500;
+  color: var(--text-1);
+}
+.tl-bullets,
+.edu-bullets {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+}
+.tl-bullets li,
+.edu-bullets li {
+  position: relative;
+  padding-left: 22px;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  line-height: 1.65;
+}
+.tl-bullets li::before,
+.edu-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 10px;
+  height: 1px;
+  background: var(--crimson-hi);
+}
+.tl-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ---------- Education ---------- */
+.edu-grid {
+  display: grid;
+  gap: 20px;
+}
+@media (min-width: 860px) {
+  .edu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.edu-grid > li {
+  display: flex;
+}
+.edu-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: clamp(24px, 3vw, 36px);
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(163, 28, 27, 0.14), transparent 50%),
+    linear-gradient(180deg, var(--surface-2), var(--surface-1));
+  overflow: hidden;
+  transition: transform 0.6s var(--ease-expo);
+}
+.edu-card:hover {
+  transform: translateY(-6px);
+}
+.edu-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.edu-when {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+}
+.edu-degree {
+  margin-top: 28px;
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.edu-inst {
+  margin-top: 6px;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.edu-score {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed var(--line-2);
+}
+.edu-cgpa {
+  font-size: clamp(3rem, 2rem + 3vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  background: linear-gradient(180deg, var(--text-1), var(--crimson-hi));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.edu-score .mono {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  line-height: 1.4;
+  padding-bottom: 4px;
+}
+.edu-card .chip-row {
+  margin-top: auto;
+}

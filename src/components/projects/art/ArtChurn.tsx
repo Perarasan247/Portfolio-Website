@@ -18,7 +18,7 @@ export function ArtChurn() {
             cy={cy}
             r="10"
             fill="none"
-            stroke="rgba(245,165,36,0.4)"
+            stroke="rgba(255,170,140,0.4)"
             strokeWidth="1"
             strokeDasharray="2 2"
           />,
@@ -30,8 +30,8 @@ export function ArtChurn() {
           cx={cx}
           cy={cy}
           r={risk ? 6 : 4.5}
-          fill={risk ? 'rgba(245,165,36,0.9)' : 'rgba(255,255,255,0.10)'}
-          stroke={risk ? 'rgba(245,165,36,1)' : 'rgba(255,255,255,0.35)'}
+          fill={risk ? 'rgba(255,170,140,0.9)' : 'rgba(255,255,255,0.10)'}
+          stroke={risk ? 'rgba(255,170,140,1)' : 'rgba(255,255,255,0.35)'}
           strokeWidth={risk ? 1.4 : 1}
         />,
       );
@@ -47,12 +47,12 @@ export function ArtChurn() {
           width="26"
           height="116"
           rx="4"
-          fill="rgba(7,6,17,0.55)"
+          fill="rgba(6,17,12,0.55)"
           stroke="rgba(255,255,255,0.18)"
           strokeWidth="1"
         />
-        <rect x="203" y="53" width="20" height="78" rx="3" fill="rgba(245,165,36,0.45)" />
-        <line x1="200" y1="53" x2="226" y2="53" stroke="rgba(245,165,36,0.95)" strokeWidth="1.2" />
+        <rect x="203" y="53" width="20" height="78" rx="3" fill="rgba(255,170,140,0.45)" />
+        <line x1="200" y1="53" x2="226" y2="53" stroke="rgba(255,170,140,0.95)" strokeWidth="1.2" />
         <text
           x="213"
           y="13"
@@ -69,7 +69,7 @@ export function ArtChurn() {
           y="48"
           fontFamily={mono}
           fontSize="9"
-          fill="rgba(245,165,36,0.95)"
+          fill="rgba(255,170,140,0.95)"
           textAnchor="middle"
           fontWeight="700"
         >

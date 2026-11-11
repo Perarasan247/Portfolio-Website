@@ -80,3 +80,15 @@ export const IconFile = (p: IconProps) => (
     <path d="M14 3v5h5M9 13h6M9 17h4" />
   </Stroke>
 );
+
+export const IconSpark = (p: IconProps) => (
+  <Stroke {...p}>
+    <path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1" />
+  </Stroke>
+);
+
+export const IconArrowDown = (p: IconProps) => (
+  <Stroke {...p}>
+    <path d="M12 5v14M6 13l6 6 6-6" />
+  </Stroke>
+);

@@ -5,8 +5,7 @@ import { SKILLS } from './skills';
 export const PROFILE: Profile = {
   name: 'Perarasan D',
   role: 'ML Engineer',
-  tagline:
-    'Building intelligent systems — from LLMs and computer vision to production ML pipelines.',
+  tagline: 'Good models are built. Great ones are measured, monitored, and maintained.',
   status: 'Open to Software Engineer (AI/ML), Data Scientist, AI/ML Engineer roles',
   email: 'perarasandevarajan@gmail.com',
   location: 'Chennai, IN',

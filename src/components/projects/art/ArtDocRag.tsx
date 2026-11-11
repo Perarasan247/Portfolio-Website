@@ -54,8 +54,8 @@ export function ArtDocRag() {
           width="90"
           height="12"
           rx="2"
-          fill="rgba(245,165,36,0.20)"
-          stroke="rgba(245,165,36,0.85)"
+          fill="rgba(255,170,140,0.20)"
+          stroke="rgba(255,170,140,0.85)"
           strokeWidth="1"
         />
         <text
@@ -63,7 +63,7 @@ export function ArtDocRag() {
           y="70"
           fontFamily={mono}
           fontSize="10"
-          fill="rgba(245,165,36,0.95)"
+          fill="rgba(255,170,140,0.95)"
           fontWeight="700"
         >
           [1]
@@ -71,7 +71,7 @@ export function ArtDocRag() {
       </g>
       <path
         d="M 138 68 Q 168 68 175 88"
-        stroke="rgba(92,200,240,0.5)"
+        stroke="rgba(127,209,174,0.5)"
         strokeWidth="1"
         strokeDasharray="3 3"
         fill="none"
@@ -83,8 +83,8 @@ export function ArtDocRag() {
           width="82"
           height="60"
           rx="4"
-          fill="rgba(7,6,17,0.65)"
-          stroke="rgba(92,200,240,0.7)"
+          fill="rgba(6,17,12,0.65)"
+          stroke="rgba(127,209,174,0.7)"
           strokeWidth="1"
         />
         <text
@@ -92,7 +92,7 @@ export function ArtDocRag() {
           y="102"
           fontFamily={mono}
           fontSize="7"
-          fill="rgba(92,200,240,0.9)"
+          fill="rgba(127,209,174,0.9)"
           letterSpacing="0.15em"
         >
           CITATION
@@ -103,8 +103,8 @@ export function ArtDocRag() {
         <text x="156" y="129" fontFamily={mono} fontSize="7" fill="rgba(255,255,255,0.55)">
           page 47 · 0.98
         </text>
-        <line x1="156" y1="136" x2="222" y2="136" stroke="rgba(92,200,240,0.35)" strokeWidth="1" />
-        <line x1="156" y1="141" x2="200" y2="141" stroke="rgba(92,200,240,0.35)" strokeWidth="1" />
+        <line x1="156" y1="136" x2="222" y2="136" stroke="rgba(127,209,174,0.35)" strokeWidth="1" />
+        <line x1="156" y1="141" x2="200" y2="141" stroke="rgba(127,209,174,0.35)" strokeWidth="1" />
       </g>
     </svg>
   );
