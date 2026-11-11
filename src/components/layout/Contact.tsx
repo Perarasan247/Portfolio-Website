@@ -150,7 +150,7 @@ export function Contact() {
 
       <div className="container">
         <div className="footer-big reveal" aria-hidden="true">
-          {PROFILE.name.split('').map((ch, i) => (
+          {PROFILE.name.split(' ')[0].split('').map((ch, i) => (
             <span key={i} style={vars({ '--d': i })}>
               {ch === ' ' ? ' ' : ch}
             </span>
