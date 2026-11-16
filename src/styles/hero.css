@@ -208,6 +208,52 @@
 .portrait-tilt:hover .portrait-frame img {
   transform: scale(1.14);
 }
+
+/* ---------- Talking avatar ---------- */
+.avatar-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 12%;
+  filter: contrast(1.05) saturate(0.95);
+}
+.avatar-sound {
+  position: absolute;
+  z-index: 3;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: var(--text-1);
+  background: rgba(23, 23, 23, 0.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--line-2);
+  transition:
+    transform 0.5s var(--ease-out),
+    background 0.3s,
+    border-color 0.3s;
+}
+.avatar-sound:hover {
+  transform: scale(1.08);
+  background: rgba(163, 28, 27, 0.85);
+  border-color: var(--crimson-hi);
+}
+.avatar-sound[aria-pressed='true'] {
+  background: var(--crimson);
+  border-color: var(--crimson-hi);
+}
+.avatar-sound.is-hint::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--crimson-hi);
+  animation: ping 1.8s var(--ease-out) infinite;
+}
 .portrait-frame::after {
   content: '';
   position: absolute;

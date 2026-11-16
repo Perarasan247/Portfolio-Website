@@ -147,3 +147,26 @@ export const PROJECTS: Project[] = [
     github: 'https://github.com/Perarasan247/Customer-Churn-Prediction',
   },
 ];
+
+/**
+ * Projects shown on the home page, in this order (max 5).
+ * Use the `id` of any project above; reorder the list to rearrange them.
+ * Every project in PROJECTS (in its own order) appears on the "All projects" page.
+ */
+export const FEATURED_PROJECT_IDS: string[] = [
+  'bonevision',
+  'pilot',
+  'data-analyst-agent',
+  'doc-rag',
+  'tomato-disease',
+];
+
+export const MAX_FEATURED = 5;
+
+export const FEATURED_PROJECTS: Project[] = FEATURED_PROJECT_IDS.slice(0, MAX_FEATURED).flatMap(
+  (id) => {
+    const p = PROJECTS.find((x) => x.id === id);
+    if (!p && import.meta.env.DEV) console.warn(`FEATURED_PROJECT_IDS: unknown project id "${id}"`);
+    return p ? [p] : [];
+  },
+);

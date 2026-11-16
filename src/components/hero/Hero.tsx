@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { FOCUS_AREAS, HIGHLIGHTS, PROFILE } from '../../data/profile';
-import { asset } from '../../utils/asset';
 import { vars } from '../../utils/cssVars';
 import { CountUp } from '../common/CountUp';
 import { SplitText } from '../common/SplitText';
 import { NeuralCanvas } from '../fx/NeuralCanvas';
 import { IconArrowDown, IconArrowRight, IconPlay } from '../icons/Icons';
+import { TalkingAvatar } from './TalkingAvatar';
 
 interface HeroProps {
   onPlayIntro: () => void;
+  introOpen?: boolean;
 }
 
 function Rotator({ words }: { words: string[] }) {
@@ -39,7 +40,7 @@ function Rotator({ words }: { words: string[] }) {
   );
 }
 
-export function Hero({ onPlayIntro }: HeroProps) {
+export function Hero({ onPlayIntro, introOpen = false }: HeroProps) {
   const [first, ...rest] = PROFILE.name.split(' ');
 
   return (
@@ -92,13 +93,7 @@ export function Hero({ onPlayIntro }: HeroProps) {
           <div className="portrait-tilt" data-tilt="8">
             <div className="portrait-glow" aria-hidden="true" />
             <div className="portrait-frame">
-              <img
-                src={asset('assets/portrait.webp')}
-                alt={'Portrait of ' + PROFILE.name}
-                width={768}
-                height={1376}
-                fetchPriority="high"
-              />
+              <TalkingAvatar suspended={introOpen} />
               <div className="portrait-scan" aria-hidden="true" />
               <span className="corner tl" aria-hidden="true" />
               <span className="corner tr" aria-hidden="true" />

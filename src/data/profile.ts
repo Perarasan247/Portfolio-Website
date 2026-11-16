@@ -31,3 +31,6 @@ export const HIGHLIGHTS = [
 
 /** Drop the file at public/videos/intro.mp4 and the hero's intro button will play it. */
 export const INTRO_VIDEO = 'videos/intro.mp4';
+
+/** Talking-avatar loop for the hero portrait (without extension; .mp4 required, .webm optional). */
+export const AVATAR_VIDEO = 'videos/avatar';

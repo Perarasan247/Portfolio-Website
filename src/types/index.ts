@@ -82,4 +82,6 @@ export interface Certificate {
 
 export interface Achievement extends Certificate {
   desc: string;
+  /** Brand colour of the issuer, used for the card glow. */
+  tint?: string;
 }

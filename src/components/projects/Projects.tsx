@@ -1,94 +1,129 @@
-import { useLayoutEffect, useRef, useState } from 'react';
-import { DOMAIN_LABELS, PROJECTS } from '../../data/projects';
-import type { Project, ProjectDomain } from '../../types';
+import { useEffect, useRef, useState } from 'react';
+import { FEATURED_PROJECTS, PROJECTS } from '../../data/projects';
+import { allProjectsHref } from '../../utils/routes';
+import type { Project } from '../../types';
 import { vars } from '../../utils/cssVars';
 import { SplitText } from '../common/SplitText';
-import { IconArrowUpRight } from '../icons/Icons';
+import { IconArrowRight, IconArrowUpRight } from '../icons/Icons';
 import { ProjectArt } from './ProjectArt';
 
-type Filter = ProjectDomain | 'all';
-const FILTERS: Filter[] = ['all', 'cv', 'agents', 'ml'];
+const MAX_CHIPS = 6;
+const HOVER_INTENT_MS = 140;
 
 interface ProjectsProps {
   onSelect: (project: Project) => void;
 }
 
-function ProjectCard({
-  project,
-  index,
-  onSelect,
-}: {
+interface PanelProps {
   project: Project;
   index: number;
+  open: boolean;
+  onOpen: () => void;
+  onHover: () => void;
+  onHoverEnd: () => void;
   onSelect: () => void;
-}) {
-  const num = String(PROJECTS.indexOf(project) + 1).padStart(2, '0');
+}
+
+function Panel({ project, index, open, onOpen, onHover, onHoverEnd, onSelect }: PanelProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const num = String(index + 1).padStart(2, '0');
+  const extra = project.stack.length - MAX_CHIPS;
+  const contentId = `acc-c-${project.id}`;
+
+  // Closed panels are visually hidden; keep their links out of the tab order.
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    if (open) el.removeAttribute('inert');
+    else el.setAttribute('inert', '');
+  }, [open]);
+
   return (
     <li
-      className={'pcard-wrap reveal' + (project.featured ? ' featured' : '')}
-      style={vars({ '--i': index % 3 })}
+      className={'acc-panel' + (open ? ' is-open' : '')}
+      onMouseEnter={onHover}
+      onMouseLeave={onHoverEnd}
     >
       <button
         type="button"
-        className="pcard spot spot-border"
-        onClick={onSelect}
-        data-tilt="5"
-        data-cursor="Explore"
-        aria-label={project.title + ' — open case study'}
+        className="acc-spine"
+        aria-expanded={open}
+        aria-controls={contentId}
+        onClick={onOpen}
+        onFocus={onOpen}
       >
-        <span className="pcard-media">
-          <ProjectArt project={project} />
-          <span className="pcard-num mono" aria-hidden="true">
-            {num}
-          </span>
-          {project.tag && <span className="pcard-tag mono">{project.tag}</span>}
-        </span>
-        <span className="pcard-body">
-          <span className="pcard-cat mono">{project.cat}</span>
-          <span className="pcard-title">{project.title}</span>
-          <span className="pcard-blurb">{project.blurb}</span>
-          <span className="pcard-metrics">
-            {project.impact.slice(0, project.featured ? 3 : 2).map((m) => (
-              <span className="pcard-metric" key={m.l}>
-                <b className="tabular">{m.v}</b>
-                <small>{m.l}</small>
-              </span>
-            ))}
-          </span>
-          <span className="pcard-foot">
-            <span className="chip-row">
-              {project.stack.slice(0, project.featured ? 5 : 3).map((s) => (
-                <span className="chip" key={s}>
-                  {s}
-                </span>
-              ))}
-            </span>
-            <span className="pcard-go" aria-hidden="true">
-              <IconArrowUpRight />
-            </span>
-          </span>
+        <span className="acc-num mono">{num}</span>
+        <span className="acc-vtitle">{project.title}</span>
+        <span className="acc-plus" aria-hidden="true">
+          +
         </span>
       </button>
+
+      <div className="acc-content" id={contentId} ref={contentRef}>
+        <div className="acc-info">
+          <p className="acc-eyebrow mono">
+            <b>{num}</b>
+            <span aria-hidden="true" />
+            {project.cat}
+          </p>
+          <h3 className="acc-title">{project.title}</h3>
+          <p className="acc-blurb">{project.blurb}</p>
+          <dl className="acc-metrics">
+            {project.impact.map((m) => (
+              <div key={m.l}>
+                <dt>{m.l}</dt>
+                <dd className="tabular">{m.v}</dd>
+              </div>
+            ))}
+          </dl>
+          <ul className="acc-tech" aria-label="Technologies">
+            {project.stack.slice(0, MAX_CHIPS).map((s) => (
+              <li className="chip" key={s}>
+                {s}
+              </li>
+            ))}
+            {extra > 0 && <li className="chip">+{extra}</li>}
+          </ul>
+          <div className="acc-actions">
+            <button type="button" className="acc-cta" onClick={onSelect}>
+              Read case study <IconArrowRight />
+            </button>
+            {project.github && (
+              <a className="acc-link" href={project.github} target="_blank" rel="noreferrer">
+                GitHub <IconArrowUpRight />
+              </a>
+            )}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="acc-visual"
+          onClick={onSelect}
+          tabIndex={-1}
+          aria-hidden="true"
+          data-cursor="Explore"
+        >
+          <ProjectArt project={project} />
+          {project.tag && <span className="acc-tag mono">{project.tag}</span>}
+        </button>
+      </div>
     </li>
   );
 }
 
 export function Projects({ onSelect }: ProjectsProps) {
-  const [filter, setFilter] = useState<Filter>('all');
-  const tabsRef = useRef<HTMLDivElement>(null);
-  const [pill, setPill] = useState({ x: 0, w: 0 });
-  const visible = filter === 'all' ? PROJECTS : PROJECTS.filter((p) => p.domain === filter);
+  const [openIdx, setOpenIdx] = useState(0);
+  const hoverTimer = useRef<number>();
 
-  useLayoutEffect(() => {
-    const measure = () => {
-      const btn = tabsRef.current?.querySelector<HTMLElement>('[aria-pressed="true"]');
-      if (btn) setPill({ x: btn.offsetLeft, w: btn.offsetWidth });
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    document.fonts?.ready.then(measure);
-    return () => window.removeEventListener('resize', measure);
-  }, [filter]);
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
+
+  const hoverOpen = (i: number) => {
+    if (!window.matchMedia('(hover: hover) and (min-width: 1100px)').matches) return;
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setOpenIdx(i), HOVER_INTENT_MS);
+  };
+  const cancelHover = () => window.clearTimeout(hoverTimer.current);
 
   return (
     <section className="section projects" id="projects" aria-labelledby="projects-title">
@@ -103,52 +138,42 @@ export function Projects({ onSelect }: ProjectsProps) {
               id="projects-title"
               className="section-title"
               by="words"
-              text={[
-                { t: 'Projects that shipped, taught, or ' },
-                { t: 'surprised', className: 'serif' },
-                { t: ' me.' },
-              ]}
+              text={[{ t: 'Things I’ve ' }, { t: 'built.', className: 'serif' }]}
             />
           </div>
           <p className="section-sub reveal" style={vars({ '--i': 1 })}>
-            Open any project for the full case study — the problem, the approach, and the measured
-            impact.
+            A few favourites across medical imaging, autonomous agents and RAG. Hover a panel to
+            open it, or{' '}
+            <a className="text-link" href={allProjectsHref}>
+              browse all {PROJECTS.length} projects
+            </a>
+            .
           </p>
         </div>
 
-        <div
-          className="tabs reveal"
-          role="group"
-          aria-label="Filter projects by domain"
-          ref={tabsRef}
-        >
-          <span
-            className="tabs-pill"
-            style={vars({ '--x': pill.x + 'px', '--w': pill.w + 'px' })}
-            aria-hidden="true"
-          />
-          {FILTERS.map((f) => {
-            const count =
-              f === 'all' ? PROJECTS.length : PROJECTS.filter((p) => p.domain === f).length;
-            return (
-              <button
-                key={f}
-                type="button"
-                aria-pressed={filter === f}
-                onClick={() => setFilter(f)}
-              >
-                {f === 'all' ? 'All work' : DOMAIN_LABELS[f]}
-                <sup className="mono tabular">{count}</sup>
-              </button>
-            );
-          })}
-        </div>
-
-        <ul className="pgrid" key={filter}>
-          {visible.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} onSelect={() => onSelect(p)} />
+        <ol className="acc reveal" aria-label="Projects">
+          {FEATURED_PROJECTS.map((p, i) => (
+            <Panel
+              key={p.id}
+              project={p}
+              index={i}
+              open={i === openIdx}
+              onOpen={() => setOpenIdx(i)}
+              onHover={() => hoverOpen(i)}
+              onHoverEnd={cancelHover}
+              onSelect={() => onSelect(p)}
+            />
           ))}
-        </ul>
+          <li className="acc-panel acc-more">
+            <a className="acc-spine" href={allProjectsHref} data-cursor="All">
+              <span className="acc-num mono">{String(PROJECTS.length).padStart(2, '0')}</span>
+              <span className="acc-vtitle">All projects</span>
+              <span className="acc-plus" aria-hidden="true">
+                <IconArrowRight />
+              </span>
+            </a>
+          </li>
+        </ol>
       </div>
     </section>
   );

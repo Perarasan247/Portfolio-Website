@@ -59,7 +59,7 @@ export default function App() {
 
       <Navbar progress={progress} />
       <main id="main" tabIndex={-1}>
-        <Hero onPlayIntro={() => setIntroOpen(true)} />
+        <Hero onPlayIntro={() => setIntroOpen(true)} introOpen={introOpen} />
         <div className="ticker-wrap" aria-hidden="true">
           <div className="ticker">
             <Marquee speed={36}>
